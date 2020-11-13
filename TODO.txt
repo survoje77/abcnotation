@@ -8,3 +8,5 @@
 * abc to png
 * abc to pdf
 * abc to tin_whistle (avec flute.fmt)
+
+Y a plus qu'a tester avec des fichiers réels.
