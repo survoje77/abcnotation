@@ -1,4 +1,4 @@
-#script abc-transform
+# script _abc-transform_
 script en _bash_, réalisé sur système Linux-Debian
 
 Permet, à partir d'un fichier _abc_, d'obtenir :
@@ -29,7 +29,7 @@ Programmes utilisés :
 
 Les fichiers résultats sont enregistrés dans le répertoire d'origine du fichier _.abc_
 
-##Script
+## Script
 
 Le script tourne tant que _quitter_ n'a pas été demandé.
 
@@ -54,7 +54,7 @@ En sortie :
 *  un fichier _NOM.pdf_ en A4
 * un fichier _NOM-crop.pdf_
 
-###Transpose+MP3+PDF
+### Transpose+MP3+PDF
 Transpose le fichier _abc_ 
 
 En entrée :
@@ -68,7 +68,7 @@ En sortie :
 *  un fichier _NOM\_transpose.pdf_ en A4
 *  un fichier _NOM\_transpose-crop.pdf_
 
-###Whistle+MP3+PDF
+### Whistle+MP3+PDF
 Intègre la tablature _tin whistle_ en sortie visuelle
 
 En entrée :
@@ -82,7 +82,7 @@ En sortie :
 
 Le fichier _abc_ reste inchangé, le fichier _mp3_ est le même qu'en 1.
 
-##TO DO
+## TO DO
 * ouvrir le fichier avec _nano_ pour d'éventuels changements.
 * filtrer l'ouverture des fichiers aux seuls _.abc_
 * gestion des erreurs
