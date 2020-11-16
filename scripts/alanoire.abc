@@ -1,0 +1,16 @@
+X:3
+T:\`A la noire
+T:m\'ethode bleue page 12
+Q:96
+M:4/4
+L:1/4
+K:C
+%%MIDI program 21
+%%MIDI gchord ccz
+%%MIDI gchord fzczfzcz
+%%MIDI bassprog 21
+%%MIDI chordprog 21 % guitare
+%%MIDI bassvol 60
+%%MIDI chordvol 30
+"C"C E C E | G E C E | C E C E | G E C E |
+"G7"B, D B, D | G D B, D | B, D B, D |"C"C E C z ||
