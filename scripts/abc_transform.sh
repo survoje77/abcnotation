@@ -67,11 +67,11 @@ do
 			evince $NOM"_tin".pdf &
 		#mp3			
 			#midi
-			abc2midi $NOM"_tin".abc -o $NOM"_tin".mid
+			abc2midi $NOM.abc -o $NOM.mid
 		#midi to mp3;
-			timidity -Ow $NOM"_tin".mid && lame $NOM"_tin".wav $NOM"_tin".mp3
+			timidity -Ow $NOM.mid && lame $NOM.wav $NOM.mp3
 		#suppression du wav
-			rm $NOM"_tin".wav				
+			rm $NOM.wav				
 		fi
 		done
 		#sortie du while choix
