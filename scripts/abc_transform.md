@@ -1,13 +1,15 @@
 # script _abc-transform_
 script en _bash_, réalisé sur système Linux-Debian
 
-Permet, à partir d'un fichier _abc_, d'obtenir :
 
-* une sortie normale du fichier d'origine (_eps_, _midi_, _mp3_, _pdf_) 
-* une sortie transposée du fichier d'origine (_eps_, _abc_, _midi_, _mp3_, _pdf_)
-* une sortie avec tablature _tin whistle_ (_eps_, _midi_, _mp3_, _pdf_)
+À partir d'un fichier _abc_ :
 
-> Le ficher _pdf_ est, de plus, "croppé", c'est-à-dire tronqué au minimum (utile pour un affichage écran ou pour insertion dans _Latex_ par exemple.)
+* affiche la sortie _eps_ 
+* permet la création d'un _pdf_
+* permet la création d'un _mp3_
+* permet la transpostion en fichier _abc_, avec _pdf_ et _mp3_ 
+* permet une sortie tablature _tin whistle_ avec _pdf_ et _mp3_
+
 
 Programmes utilisés :
 
@@ -17,45 +19,47 @@ Programmes utilisés :
 *  _abc2midi_ (création du fichier _mid_)
 *  _timidity_ + _lame_ (modification en _mp3_)
 *  _ps2pdf_ (_eps_ to _pdf_)
-*  _pdfcrop_ (crop du _pdf_)
+*  _evince_ pour l'affichage
 
  Variables du script :
 
 * NOM (fichier _.abc_ ouvert)
 * choix (menu choisi)
-* FICHIER (nom de fichier temporaire)
-* TRANSPO (facteur de transposition)
-* TIN (tonalité du Tin Whistle)
+* TONALITE (facteur de transposition)
+* TIN (choix du Tin Whistle)
 
 Les fichiers résultats sont enregistrés dans le répertoire d'origine du fichier _.abc_
 
 ## Script
 
-Le script tourne tant que _quitter_ n'a pas été demandé.
+1. fichier à ouvrir
 
-L'autre choix est l'ouverture d'un fichier _abc_.
+2. Menu au choix :
+```
+    PDF
+    MP3
+    Transpose+PDF+MP3
+    Whistle+PDF+MP3
+```
+Le script tourne avec le fichier _abc_ ouvert en 1. tant qu'on reste dans le menu. _Annuler_ renvoie à l'ouverture d'un (autre) fichier. _Annuler_ à ce niveau fait quitter le script.
 
-En entrée :
 
-* le fichier _abc_ 
+### PDF
+En sortie :
 
-Un menu au choix est alors proposé :
+* création du _pdf_
+* affichage du _pdf_
 
-* MP3+PDF
-* Transpose+MP3+PDF
-* Whistle+MP3+PDF
+### MP3
+En sortie :
 
-### MP3+PDF
-Action minimale commune au 3 choix !
+* création du fichier _midi_ 
+* Création du fichier _mp3_. 
+* Pas d'ouverture de fichier (à faire)
 
-En sortie : 
+> processus via un fichier _wav_ qui est supprimé à la fin
 
-* un fichier _NOM.mp3_
-*  un fichier _NOM.pdf_ en A4
-* un fichier _NOM-crop.pdf_
-
-### Transpose+MP3+PDF
-Transpose le fichier _abc_ 
+### Transpose+PDF+MP3
 
 En entrée :
 
@@ -63,27 +67,30 @@ En entrée :
 
 En sortie :
 
-* un fichier _NOM\_transpose.abc_
-* un fichier _NOM\_transpose.mp3_
-*  un fichier _NOM\_transpose.pdf_ en A4
-*  un fichier _NOM\_transpose-crop.pdf_
+* création d'un nouveau fichier (_NOM\_transpose.abc_)
+* création du_mp3_ correspondant (_NOM\_transpose.mp3_)
+* création et affichage du fichier _NOM\_transpose.pdf_
+
+Note : 
+
+Si l'on souhaite utiliser le script pour ce nouveau fichier, il convient de l'ouvrir.
 
 ### Whistle+MP3+PDF
 Intègre la tablature _tin whistle_ en sortie visuelle
 
 En entrée :
 
-* tonalité du _Tin Whistle_ (3 tonalités proposées D, C eg G, voir le fichier _flute.fmt_ pour un autre choix)
+* tonalité du _Tin Whistle_ (3 tonalités proposées D, C et G, voir le fichier _flute.fmt_ pour un autre choix)
 
 En sortie :
 
-*  un fichier _NOM\_transpose.pdf_ en a4 
-*  un fichier _NOM\_transpose-crop.pdf_
+* création et affichage du fichier _NOM\_tin.pdf_  
+* le fichier _abc_ reste inchangé, le fichier _mp3_ est le même qu'en 1.
 
-Le fichier _abc_ reste inchangé, le fichier _mp3_ est le même qu'en 1.
+
 
 ## TO DO
-* ouvrir le fichier avec _nano_ pour d'éventuels changements.
+* ouvrir le fichier avec un éditeur de texte pour d'éventuels changements.
 * filtrer l'ouverture des fichiers aux seuls _.abc_
 * gestion des erreurs
-* sortie du script
+* _pdfcrop_ pour des _pdf_ tronqués à la seule partition
