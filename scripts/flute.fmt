@@ -344,12 +344,12 @@ beginps
 endps
 
 % all tin whistle transpositions
-%tablature #1 pitch=D 35 0 63 tw_head tw_note
-%tablature #2 pitch=C 35 0 63 tw_head tw_note
+tablature #1 pitch=D 35 0 63 tw_head tw_note
+tablature #2 pitch=C 35 0 63 tw_head tw_note
 %tablature #3 pitch=Eb 60 0 63 tw_head tw_note
 %tablature #4 pitch=Bb, 60 0 63 tw_head tw_note
 %tablature #5 pitch=F, 35 0 63 tw_head tw_note
-%tablature #6 pitch=G 35 0 63 tw_head tw_note
+tablature #6 pitch=G 35 0 63 tw_head tw_note
 %tablature #7 pitch=A, 35 0 63 tw_head tw_note
 
 % galoubet
