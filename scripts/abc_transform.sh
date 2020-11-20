@@ -24,8 +24,7 @@ do
 		#eps
 			abcm2ps $NOM.abc -O $NOM.eps
 		#affichage
-			ps2pdf $NOM.eps $NOM.pdf
-				evince $NOM.pdf &
+			evince $NOM.eps &
 		#---------------------------------------	
 		##MP3
 		elif [ $choix = "MP3" ] ; then			
@@ -56,12 +55,12 @@ do
 			#suppression du wav
 			rm $NOM"_transpose".wav		
 		#----------------------------------------
-		##TIN + MP3				
+		##TIN + MP3 +PDF				
 		elif [ $choix = "Whistle+PDF+MP3" ] ; then
 		#Choix du TIN
 			TIN=$(zenity --entry --title="Entrer la tonalité" --text="1 pour D, 2 pour C, 6 pour G ?")
 		#eps
-			abcm2ps $NOM.abc -F flute.fmt -T$TIN -O $NOM"_tin".eps
+			abcm2ps $NOM -F flute.fmt -T$TIN -O $NOM"_tin".eps
 		#affichage
 			ps2pdf $NOM"_tin".eps $NOM"_tin".pdf
 			evince $NOM"_tin".pdf &
