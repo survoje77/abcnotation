@@ -35,3 +35,20 @@ _Ĉi tiu skripto uzas plurajn programaĵojn per menuo por plifaciligi la "abc"-s
 (_La produktitaj dosieroj troviĝas en la labora dosierujo_)
 
 _chmod +x abcnotation,.sh_ pour rendre le script exécutable
+
+## Test
+Deux fichiers en exemple :     
+_Two example files_    
+_Du ekzemplaj dosieroj_
+ 
+  
+* gitane.abc   
+* br_mon_arbre.abc (Brassens)
+
+Ces fichiers doivent être dans le même répertoire que le script (amélioration bienvenue)    
+_These files must be in the same directory as the script (welcome improvement)_    
+_Ĉi tiuj dosieroj devas esti en la sama dosierujo kiel la skripto (plibonigo estas bonvena)_
+
+Le fichier flute.fmt sert au tin whistle.    
+_The flute.fmt file is used for tin whistle._   
+_La dosiero flute.fmt estas uzata por stanfajfilo._
