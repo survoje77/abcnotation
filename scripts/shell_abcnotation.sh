@@ -41,27 +41,12 @@ if [ "$?" -eq 0 ]; then
 		echo $(ColorRed  "Erreur dans le fichier ")
 		echo "Merci d'y remédier !"
 		sleep 5
-#	until [  "$?" -ne 0 ]
-#	do
-#		reponse="y"
-#		echo $?
-#		read -p "Visualiser $FICHIER_ABC.abc [y] ?" reponse
-#		echo $reponse
-#		read -p "attente" attente
-#		if reponse"y"; then
-#			nano $FICHIER_ABC.abc
-#			abcm2ps -q $FICHIER_ABC.abc -O $FICHIER_ABC.eps
-#		else break	
-#		fi
-#	done
 fi
 }
 
 #-----entrée du fichier à traiter, test de présence, compile en eps
 ouvrir_abc()
 {
-#until [ -e "$FICHIER_ABC.abc" ]
-#do
 read -p 'Fichier abc (sans extension) : ' FICHIER_ABC
 if [ -e $FICHIER_ABC".abc" ]
 	then
@@ -73,7 +58,6 @@ if [ -e $FICHIER_ABC".abc" ]
 	else echo $(ColorRed "Le fichier n'existe pas")
 	sleep 5
 fi
-#done
 }
 
 creer_abc()
@@ -96,9 +80,10 @@ echo "   " >> $FICHIER_ABC.log
 echo $(ColorGreen "Création du fichier $FICHIER_ABC.abc ok")
 sleep 3
 }
+
 #======fonctions de traitements
 
-#-----ouvrir le fichier abc (éditeur nano)
+#-----ouvrir le fichier abc (éditeur nano), validité du fichier en sortie test_abcm2ps
 to_fichier()
 {
 nano  $FICHIER_ABC.abc
@@ -114,7 +99,6 @@ nano  $FICHIER_ABC.log
 #------tranposition
 to_transpose()
 {
-#todo
 read -p 'Entrez avec + ou - les demi-tons de transposition : ' TONALITE
 abc2abc $FICHIER_ABC.abc -t $TONALITE > $FICHIER_ABC"_transpose".abc
 echo " Transposition $FICHIER_ABC.abc" >> $FICHIER_ABC.log
@@ -132,7 +116,7 @@ echo " Fichier $FICHIER_ABC.png OK" >> $FICHIER_ABC.log
 sleep 3
 }
 
-#-----produire un extrait latex (à inclure dans le source .tex avec \usepackage'abc= en préambule)
+#-----produire un extrait latex (à inclure dans le source .tex avec \usepackage{abc} en préambule)
 to_latex()
 {
 echo "\index{$FICHIER_ABC }" > $FICHIER_ABC.latex
@@ -145,7 +129,7 @@ sleep 3
 }
 
 #-----produire un mp3, via un midi et un wav, le wav est effacé à la fin
-# necessite timidity et lame
+# nécessite timidity et lame
 to_mp3()
 {
 	#création du fichier midi
@@ -160,12 +144,14 @@ echo $(ColorGreen "Fichiers $FICHIER_ABC.mid et $FICHIER_ABC.mp3 OK")
 sleep 3
 }
 
+#produit un eps tin whistle
 to_tin_whistle()
 {
 read -p 'Tonalité du tin whistle (1 pour D, 2 pour C, 6 pour G) : ' TIN
 abcm2ps $FICHIER_ABC.abc -F flute.fmt -T$TIN -O $FICHIER_ABC"_tin".eps
 }
 
+#lister les *.abc du répertoire courant
 to_list()
 {
 ls *.abc
@@ -176,9 +162,10 @@ termine()
 {
 echo "Terminé à $heure" >> $FICHIER_ABC.log
 echo "À bientôt avec la notation abc !"
+sleep 5
 }
 
-
+#----MENU--------------------
 incorrect_selection() {
   echo $(ColorRed 'Incorrect_selection! Try again.')
 }
@@ -224,8 +211,8 @@ echo -ne " Menu
         esac
 }
 
+
 #PROGRAMME PROPREMENT DIT
-#input_abc
 clear
 until [ "$a" = "0" ]; do
     menu
