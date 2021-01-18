@@ -10,6 +10,7 @@
 
 jour=$(date +%d"-"%m"-"%Y)
 heure=$(date +%H"h"%M)
+editeur=nano
 
 ##
 # Variables couleurs
@@ -35,7 +36,7 @@ test_abcm2ps()
 {
 abcm2ps -q $FICHIER_ABC.abc -O $FICHIER_ABC.eps
 if [ "$?" -eq 0 ]; then
-	echo "* Fichier $FICHIER_ABC.eps" >> $FICHIER_ABC.log
+	echo "* Fichier $FICHIER_ABC.eps" #>> $FICHIER_ABC.log
   	else
 		echo "* Erreur dans le fichier $FICHIER_ABC.abc"
 		echo $(ColorRed  "Erreur dans le fichier ")
@@ -60,6 +61,8 @@ if [ -e $FICHIER_ABC".abc" ]
 fi
 }
 
+#======fonctions de traitements
+#---- créer un fichier abc avec pré-saisie
 creer_abc()
 {
 read -p 'nom du fichier abc (sans extension, sans espace) : ' FICHIER_ABC
@@ -81,23 +84,31 @@ echo $(ColorGreen "Création du fichier $FICHIER_ABC.abc ok")
 sleep 3
 }
 
-#======fonctions de traitements
-
-#-----ouvrir le fichier abc (éditeur nano), validité du fichier en sortie test_abcm2ps
-to_fichier()
+#-----ouvrir le fichier abc (éditeur nano)
+editer_abc()
 {
-nano  $FICHIER_ABC.abc
-test_abcm2ps
+if [ -e $FICHIER_ABC".abc" ]
+	then
+		$editeur $FICHIER_ABC.abc
+		test_abcm2ps
+	else echo $(ColorRed "Vous n'avez pas ouvert de fichier abc")
+	sleep 5
+fi
 }
 
 #----ouvrir le fichier log (éditeur nano)
-to_log()
+editer_log()
 {
-nano  $FICHIER_ABC.log
+if [ -e $FICHIER_ABC".log" ]
+	then
+		$editeur $FICHIER_ABC.log
+	else echo $(ColorRed "Vous n'avez pas ouvert de fichier abc")
+	sleep 5
+fi
 }
 
 #------tranposition
-to_transpose()
+abc_to_transpose()
 {
 read -p 'Entrez avec + ou - les demi-tons de transposition : ' TONALITE
 abc2abc $FICHIER_ABC.abc -t $TONALITE > $FICHIER_ABC"_transpose".abc
@@ -108,7 +119,7 @@ sleep 3
 
 #-----produire un png (le png est "croppé" cf -trim)
 # nécessite convert (imagemagick)
-to_png()
+abc_to_png()
 {
 convert $FICHIER_ABC.eps -colorspace RGB -trim $FICHIER_ABC.png 
 echo $(ColorGreen "Fichier $FICHIER_ABC.png")
@@ -117,7 +128,7 @@ sleep 3
 }
 
 #-----produire un extrait latex (à inclure dans le source .tex avec \usepackage{abc} en préambule)
-to_latex()
+abc_to_latex()
 {
 echo "\index{$FICHIER_ABC }" > $FICHIER_ABC.latex
 echo "\begin{abc}[name=$FICHIER_ABC]" >> $FICHIER_ABC.latex
@@ -129,8 +140,8 @@ sleep 3
 }
 
 #-----produire un mp3, via un midi et un wav, le wav est effacé à la fin
-# nécessite timidity et lame
-to_mp3()
+# necessite timidity et lame
+abc_to_mp3()
 {
 	#création du fichier midi
 abc2midi $FICHIER_ABC.abc -o $FICHIER_ABC.mid #>> $FICHIER_ABC.log
@@ -144,15 +155,13 @@ echo $(ColorGreen "Fichiers $FICHIER_ABC.mid et $FICHIER_ABC.mp3 OK")
 sleep 3
 }
 
-#produit un eps tin whistle
-to_tin_whistle()
+abc_to_tin_whistle()
 {
 read -p 'Tonalité du tin whistle (1 pour D, 2 pour C, 6 pour G) : ' TIN
 abcm2ps $FICHIER_ABC.abc -F flute.fmt -T$TIN -O $FICHIER_ABC"_tin".eps
 }
 
-#lister les *.abc du répertoire courant
-to_list()
+list_abc()
 {
 ls *.abc
 }
@@ -165,7 +174,7 @@ echo "À bientôt avec la notation abc !"
 sleep 5
 }
 
-#----MENU--------------------
+
 incorrect_selection() {
   echo $(ColorRed 'Incorrect_selection! Try again.')
 }
@@ -198,19 +207,18 @@ echo -ne " Menu
         case $a in
 		1) creer_abc ; clear ; menu ;;
 		2) ouvrir_abc ; clear ; menu ;;
-		3) to_list ; menu ;;
-	        4) to_mp3 ;  clear; menu ;;
-	        5) to_png ;  clear; menu ;;
-	        6) to_transpose ; clear; menu ;;
-	        7) to_tin_whistle ;  clear; menu ;;
-	        8) to_fichier ;  clear; menu ;;
-	        9) to_log ;  clear; menu ;;
-	        10) to_latex ; clear; menu ;;
+		3) list_abc ; menu ;;
+	    4) abc_to_mp3 ;  clear; menu ;;
+	    5) abc_to_png ;  clear; menu ;;
+	    6) abc_to_transpose ; clear; menu ;;
+	    7) abc_to_tin_whistle ;  clear; menu ;;
+	    8) editer_abc ;  clear; menu ;;
+	    9) editer_log ;  clear; menu ;;
+	   10) abc_to_latex ; clear; menu ;;
 		0) exit 0 ;;
           * )  incorrect_selection ; press_enter ;;
         esac
 }
-
 
 #PROGRAMME PROPREMENT DIT
 clear
