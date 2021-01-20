@@ -11,6 +11,7 @@
 jour=$(date +%d"-"%m"-"%Y)
 heure=$(date +%H"h"%M)
 editeur=nano
+FICHIER_ABC=""
 
 ##
 # Variables couleurs
@@ -32,7 +33,7 @@ ColorRed(){
 }
 
 #function test abcm2ps pour contrôler la validité du fichier.abc
-test_abcm2ps()
+function test_abcm2ps()
 {
 abcm2ps -q $FICHIER_ABC.abc -O $FICHIER_ABC.eps
 if [ "$?" -eq 0 ]; then
@@ -46,7 +47,7 @@ fi
 }
 
 #-----entrée du fichier à traiter, test de présence, compile en eps
-ouvrir_abc()
+function ouvrir_abc()
 {
 read -p 'Fichier abc (sans extension) : ' FICHIER_ABC
 if [ -e $FICHIER_ABC".abc" ]
@@ -63,7 +64,7 @@ fi
 
 #======fonctions de traitements
 #---- créer un fichier abc avec pré-saisie
-creer_abc()
+function creer_abc()
 {
 read -p 'nom du fichier abc (sans extension, sans espace) : ' FICHIER_ABC
 touch $FICHIER_ABC.abc
@@ -85,30 +86,32 @@ sleep 3
 }
 
 #-----ouvrir le fichier abc (éditeur nano)
-editer_abc()
+function editer_abc()
 {
-if [ -e $FICHIER_ABC".abc" ]
+if [ -z "$FICHIER_ABC" ]
 	then
+		echo $(ColorRed "Vous n'avez pas ouvert de fichier abc")
+			sleep 5
+	else 
 		$editeur $FICHIER_ABC.abc
 		test_abcm2ps
-	else echo $(ColorRed "Vous n'avez pas ouvert de fichier abc")
-	sleep 5
 fi
 }
 
 #----ouvrir le fichier log (éditeur nano)
-editer_log()
+function editer_log()
 {
-if [ -e $FICHIER_ABC".log" ]
+if [  -z "$FICHIER_ABC" ]
 	then
+		echo $(ColorRed "Vous n'avez pas ouvert de fichier abc")
+			sleep 5
+	else 
 		$editeur $FICHIER_ABC.log
-	else echo $(ColorRed "Vous n'avez pas ouvert de fichier abc")
-	sleep 5
 fi
 }
 
 #------tranposition
-abc_to_transpose()
+function abc_to_transpose()
 {
 read -p 'Entrez avec + ou - les demi-tons de transposition : ' TONALITE
 abc2abc $FICHIER_ABC.abc -t $TONALITE > $FICHIER_ABC"_transpose".abc
@@ -119,7 +122,7 @@ sleep 3
 
 #-----produire un png (le png est "croppé" cf -trim)
 # nécessite convert (imagemagick)
-abc_to_png()
+function abc_to_png()
 {
 convert $FICHIER_ABC.eps -colorspace RGB -trim $FICHIER_ABC.png 
 echo $(ColorGreen "Fichier $FICHIER_ABC.png")
@@ -128,20 +131,26 @@ sleep 3
 }
 
 #-----produire un extrait latex (à inclure dans le source .tex avec \usepackage{abc} en préambule)
-abc_to_latex()
+function abc_to_latex()
 {
-echo "\index{$FICHIER_ABC }" > $FICHIER_ABC.latex
-echo "\begin{abc}[name=$FICHIER_ABC]" >> $FICHIER_ABC.latex
-cat $FICHIER_ABC.abc >> $FICHIER_ABC.latex
-echo "\end{abc}" >> $FICHIER_ABC.latex
-echo " Fichier $FICHIER_ABC.latex" >> $FICHIER_ABC.log
-echo $(ColorGreen "Fichier $FICHIER_ABC.latex OK")
-sleep 3
+if [  -z "$FICHIER_ABC" ]
+	then
+		echo $(ColorRed "Vous n'avez pas ouvert de fichier abc")
+			sleep 5
+	else 
+		echo "\index{$FICHIER_ABC }" > $FICHIER_ABC.latex
+		echo "\begin{abc}[name=$FICHIER_ABC]" >> $FICHIER_ABC.latex
+		cat $FICHIER_ABC.abc >> $FICHIER_ABC.latex
+		echo "\end{abc}" >> $FICHIER_ABC.latex
+		echo " Fichier $FICHIER_ABC.latex" >> $FICHIER_ABC.log
+		echo $(ColorGreen "Fichier $FICHIER_ABC.latex OK")
+		sleep 5
+fi
 }
 
 #-----produire un mp3, via un midi et un wav, le wav est effacé à la fin
 # necessite timidity et lame
-abc_to_mp3()
+function abc_to_mp3()
 {
 	#création du fichier midi
 abc2midi $FICHIER_ABC.abc -o $FICHIER_ABC.mid #>> $FICHIER_ABC.log
@@ -155,19 +164,28 @@ echo $(ColorGreen "Fichiers $FICHIER_ABC.mid et $FICHIER_ABC.mp3 OK")
 sleep 3
 }
 
-abc_to_tin_whistle()
+#---tablature tin-whistle (tonalité du Tin en entrée)
+function abc_to_tin_whistle()
 {
 read -p 'Tonalité du tin whistle (1 pour D, 2 pour C, 6 pour G) : ' TIN
 abcm2ps $FICHIER_ABC.abc -F flute.fmt -T$TIN -O $FICHIER_ABC"_tin".eps
 }
 
-list_abc()
+#list les fichier *.abc du répertoire
+function list_abc()
 {
 ls *.abc
 }
 
+#liste les fichiers *.abc contenant un motif
+function list_motif() 
+{
+read -p 'Motif recherché : ' MOTIF
+grep $MOTIF *.abc | cut -d: -f1 | more
+}
+
 #------fin du programme
-termine()
+function termine()
 {
 echo "Terminé à $heure" >> $FICHIER_ABC.log
 echo "À bientôt avec la notation abc !"
@@ -175,11 +193,11 @@ sleep 5
 }
 
 
-incorrect_selection() {
+function incorrect_selection() {
   echo $(ColorRed 'Incorrect_selection! Try again.')
 }
 
-press_enter() {
+function press_enter() {
   echo ""
   echo -n " Press Enter to continue "
   read
@@ -191,15 +209,16 @@ echo -ne " Menu
 	$(ColorGreen '1)') créer un fichier
 	$(ColorGreen '2)') ouvrir un fichier
 	$(ColorGreen '3)') lister les abc du répertoire
+	$(ColorGreen '4)') lister les abc selon un motif de recherche
         $(ColorGreen '----------------')
-        $(ColorGreen '4)') abc to midi-mp3
-        $(ColorGreen '5)') abc to png
-        $(ColorGreen '6)') transposition
-        $(ColorGreen '7)') tin whistle
+        $(ColorGreen '5)') $(ColorGreen $FICHIER_ABC.abc) to midi-mp3
+        $(ColorGreen '6)') $(ColorGreen $FICHIER_ABC.abc) to png
+        $(ColorGreen '7)') transposition de $(ColorGreen $FICHIER_ABC.abc)
+        $(ColorGreen '8)') tablature tin whistle de $(ColorGreen $FICHIER_ABC.abc)
         $(ColorGreen '----------------')
-        $(ColorGreen '8)') éditer $FICHIER_ABC.abc
-        $(ColorGreen '9)') éditer $FICHIER_ABC.log
-        $(ColorGreen '10)') export LaTeX
+        $(ColorGreen '9)') éditer $(ColorGreen $FICHIER_ABC.abc)
+        $(ColorGreen '10)') éditer $(ColorGreen $FICHIER_ABC.log)
+        $(ColorGreen '11)') export LaTeX de $(ColorGreen $FICHIER_ABC.abc)
         $(ColorGreen '0)') Exit
         $(ColorBlue 'Sélectionner une option : ') "
 
@@ -208,15 +227,37 @@ echo -ne " Menu
 		1) creer_abc ; clear ; menu ;;
 		2) ouvrir_abc ; clear ; menu ;;
 		3) list_abc ; menu ;;
-	    4) abc_to_mp3 ;  clear; menu ;;
-	    5) abc_to_png ;  clear; menu ;;
-	    6) abc_to_transpose ; clear; menu ;;
-	    7) abc_to_tin_whistle ;  clear; menu ;;
-	    8) editer_abc ;  clear; menu ;;
-	    9) editer_log ;  clear; menu ;;
-	   10) abc_to_latex ; clear; menu ;;
+		4) list_motif ; menu ;;
+	    	5) abc_to_mp3 ;  clear; menu ;;
+	    	6) abc_to_png ;  clear; menu ;;
+	    	7) abc_to_transpose ; clear; menu ;;
+	    	8) abc_to_tin_whistle ;  clear; second_menu ;;
+	    	9) editer_abc ;  clear; menu ;;
+	    	10) editer_log ;  clear; menu ;;
+	   	11) abc_to_latex ; clear; menu ;;
 		0) exit 0 ;;
-          * )  incorrect_selection ; press_enter ;;
+          	* )  incorrect_selection ; press_enter ;;
+        esac
+}
+
+first_menu(){
+echo -ne " Menu
+	$(ColorGreen '1)') créer un fichier
+	$(ColorGreen '2)') ouvrir un fichier
+	$(ColorGreen '3)') lister les abc du répertoire
+	$(ColorGreen '4)') lister les abc selon un motif de recherche
+        $(ColorGreen '0)') Exit
+        $(ColorBlue 'Sélectionner une option : ') "
+
+        read a
+        case $a in
+		1) creer_abc ; clear ; second_menu ;;
+		2) ouvrir_abc ; clear ; second_menu ;;
+		3) list_abc ; menu ;;
+		4) list_motif ; menu ;;
+
+		0) exit 0 ;;
+          	* )  incorrect_selection ; press_enter ;;
         esac
 }
 
