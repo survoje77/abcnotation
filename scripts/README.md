@@ -16,11 +16,12 @@ _Ĉi tiu skripto uzas plurajn programaĵojn per menuo por plifaciligi la "abc"-s
 ## Fonctions
 >* créer un fichier _abc_
 >* ouvrir/éditer un fichier _abc_
->* lister les fichiers _abc_
+>* lister les fichiers _abc_ du répertoire courant
+>* lister les fichiers d'après un motif se trouvant à l'intérieur des fichiers _abc_ (ex : K:G)
 >* fichier _.eps_
->* fichiers _mid_ et _mp3_
->* fichier _png_ (croppé)
->* transposition
+>* fichiers _.mid_ et _.mp3_
+>* fichier _.png_ (croppé)
+>* transposition _.abc_ vers _\_transpose.abc_
 >* tin whistle (C, D ou G)
 >* fichier _.log_
 >* export LaTeX (pour package _abc_)
