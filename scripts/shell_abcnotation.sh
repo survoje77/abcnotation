@@ -240,27 +240,6 @@ echo -ne " Menu
         esac
 }
 
-first_menu(){
-echo -ne " Menu
-	$(ColorGreen '1)') créer un fichier
-	$(ColorGreen '2)') ouvrir un fichier
-	$(ColorGreen '3)') lister les abc du répertoire
-	$(ColorGreen '4)') lister les abc selon un motif de recherche
-        $(ColorGreen '0)') Exit
-        $(ColorBlue 'Sélectionner une option : ') "
-
-        read a
-        case $a in
-		1) creer_abc ; clear ; second_menu ;;
-		2) ouvrir_abc ; clear ; second_menu ;;
-		3) list_abc ; menu ;;
-		4) list_motif ; menu ;;
-
-		0) exit 0 ;;
-          	* )  incorrect_selection ; press_enter ;;
-        esac
-}
-
 #PROGRAMME PROPREMENT DIT
 clear
 until [ "$a" = "0" ]; do
