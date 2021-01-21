@@ -1,7 +1,11 @@
 # script abcnotation.sh
 Développé _en bash shell_ sous système  GNU/Linux Debian 10 (buster)
 
-Ce script utilise plusieurs commandes via un menu pour rendre plus conviviale la notation _abc_.    
+Ce script utilise plusieurs commandes via un menu pour rendre plus conviviale la notation _abc_. 
+
+<img src="screen1.png" alt="drawing" width="150"/>
+![](screen1.png)
+   
 _This script uses several commands via a menu to make the abcnotation more user-friendly_     
 _Ĉi tiu skripto uzas plurajn programaĵojn per menuo por plifaciligi la "abc"-skribmanieron_
 

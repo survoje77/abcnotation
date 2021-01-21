@@ -194,12 +194,12 @@ sleep 5
 
 
 function incorrect_selection() {
-  echo $(ColorRed 'Incorrect_selection! Try again.')
+  echo $(ColorRed 'Sélection incorrecte ! Nouvelle saisie.')
 }
 
 function press_enter() {
   echo ""
-  echo -n " Press Enter to continue "
+  echo -n " Enter pour continuer "
   read
   clear
 }
