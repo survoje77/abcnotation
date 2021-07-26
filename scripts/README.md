@@ -3,7 +3,11 @@ Développé _en bash shell_ sous système  GNU/Linux Debian 10 (buster)
 
 Ce script utilise plusieurs commandes via un menu pour rendre plus conviviale la notation _abc_. 
 
+<<<<<<< HEAD
 ![](screen1.png)
+=======
+<img src="screen1.png" alt="drawing" width="450"/>
+>>>>>>> d8c09b16fd84de6405f4c5588d91615b32a08861
    
 _This script uses several commands via a menu to make the abcnotation more user-friendly_     
 _Ĉi tiu skripto uzas plurajn programaĵojn per menuo por plifaciligi la "abc"-skribmanieron_
