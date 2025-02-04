@@ -1,4 +1,4 @@
-# ABC notation
+# ABC notation (notice à venir)
 
 ## scripts
 
